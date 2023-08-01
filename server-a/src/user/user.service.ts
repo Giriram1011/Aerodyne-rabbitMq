@@ -20,8 +20,13 @@ export class UserService {
   }
   
   async findAll(): Promise<{ status: number; message: string; data: any[] }> {
+    const {data} = await this.roleGet();
     const userList = await this.userModel.find({}).exec();
-    return { status: 200, message: 'User list retrieved successfully!', data: userList };
+ 
+    return { status: 200, message: 'User list & role retrieved successfully!', data: userList.map((x:any)=>{
+      const role = data.find((role) => role._id.toString() === x.role_id);
+      return role ? {...x._doc,roleName:role.role_name} : x
+    }) };
   }
   
   
