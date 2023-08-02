@@ -7,7 +7,7 @@ export class AppService {
 
   async request():Promise<any>{
     let exchange = 'user';
-    let routingKey = 'req&res';
+    let routingKey = 'initial';
     let payload = { key: 'testing' };
     let timeout =10000
     const response = await this.amqpConnection.request<any>({

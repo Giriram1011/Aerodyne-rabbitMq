@@ -1,7 +1,7 @@
 
 import { Controller, Get } from '@nestjs/common';
 
-import { RabbitRPC, RabbitSubscribe } from '@golevelup/nestjs-rabbitmq';
+import { Nack, RabbitRPC, RabbitSubscribe } from '@golevelup/nestjs-rabbitmq';
 import { Injectable } from '@nestjs/common';
 @Injectable()
 @Controller()
@@ -14,14 +14,13 @@ export class AppController {
   } 
   @RabbitRPC({
     exchange: 'user',
-    routingKey: 'req&res',
+    routingKey: 'initial',
     queue: 'subscribe-queue',
    
   })
   public async rpcHandler(msg: {}) {
-    console.log(`Received rpc message: ${JSON.stringify(msg)}`);
-
-    return { message: 'Message from Server-B' };
+    console.log(`Received rpc message in app module: ${JSON.stringify(msg)}`);
+    return { message: 'Message from Server-B in app module' };
   }
   
 }

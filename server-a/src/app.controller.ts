@@ -11,10 +11,10 @@ export class AppController {
   }
   
   @Get('publish')
-  async message() {
+  async message(){
     try {
       let exchange = 'user';
-      let routingKey = 'getUserInfo';
+      let routingKey = 'initial';
       let payload = { key: 'value' };
       await this.amqpConnection.publish(exchange, routingKey, payload);
       return { message: 'Message sent successfully.Fire & forgot' };

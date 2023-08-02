@@ -5,11 +5,9 @@ import { User,UserSchema } from './schemas/user.schemas';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { AmqpConnection } from '@golevelup/nestjs-rabbitmq';
-import { AppService } from 'src/app.service';
 @Injectable()
 export class UserService {
   constructor(@InjectModel(User.name) private readonly userModel: Model<User>,
-  // @Inject(AmqpConnection) private rabbit: AmqpConnection
 
   private readonly amqpConnection: AmqpConnection,
   ) {}
@@ -34,8 +32,8 @@ export class UserService {
 
   async roleGet(): Promise<any> {
     let exchange = 'user';
-    let routingKey = 'getRoleInfo';
-    let payload = { key: 'testing' };
+    let routingKey = 'getRoleDetails';
+    let payload = { key: 'testing',time:(new Date()) };
     let timeout =10000
     const response = await this.amqpConnection.request<any>({
       exchange,

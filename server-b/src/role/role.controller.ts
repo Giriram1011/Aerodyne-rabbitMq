@@ -10,13 +10,13 @@ import { ApiTags,ApiBearerAuth } from '@nestjs/swagger';
 @Controller('role')
 export class RoleController {
   constructor(private readonly amqpConnection: AmqpConnection,private readonly roleService:RoleService) {}
-  @RabbitSubscribe({
-    exchange: 'user',
-    routingKey: 'getUserInfo',
-  })
-  async handleUserInfoMessage(message: any) {
-        console.log('Received message:', message);
-  }
+  // @RabbitSubscribe({
+  //   exchange: 'user',
+  //   routingKey: 'getRoleInfo',
+  // })
+  // async handleUserInfoMessage(message: any) {
+  //       console.log('Received message:', message);
+  // }
 
   @Post()
   async create(@Body() createUserDto: CreateRoleDto) {
@@ -24,12 +24,12 @@ export class RoleController {
   }
   @RabbitRPC({
     exchange: 'user',
-    routingKey: 'getRoleInfo',
+    routingKey: 'getRoleDetails',
     queue: 'subscribe-queue',
    
   })
   public async rpcHandler(msg: {}) {
-    console.log(`Received rpc message: ${JSON.stringify(msg)}`);
+    console.log(`Received rpc message in role module: ${JSON.stringify(msg)}`);
     return this.roleService.findAll();
   }
   
